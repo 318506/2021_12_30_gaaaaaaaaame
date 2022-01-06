@@ -27,8 +27,12 @@ input.onButtonPressed(Button.B, function () {
 let 子彈: game.LedSprite = null
 let 主角: game.LedSprite = null
 game.setScore(0)
+basic.showString("30")
+// 計時1分鐘
+game.startCountdown(32000)
 主角 = game.createSprite(2, 4)
 let 飛機 = game.createSprite(0, 0)
+let time = 60
 // 飛機碰到主角
 //   →遊戲結束
 basic.forever(function () {
@@ -50,6 +54,8 @@ basic.forever(function () {
             飛機.set(LedSpriteProperty.X, 0)
             // 同上
             飛機.set(LedSpriteProperty.Y, 0)
+            // 子彈打到時的音效
+            soundExpression.hello.play()
         }
     }
 })
@@ -68,6 +74,11 @@ basic.forever(function () {
         飛機.change(LedSpriteProperty.Y, 1)
     }
 })
+/**
+ * 再改
+ * 
+ * (得分到就加)
+ */
 // 得分後的音效
 basic.forever(function () {
     if (game.score() == 10) {
@@ -76,14 +87,57 @@ basic.forever(function () {
         basic.showString("" + (game.score()))
         game.resume()
     }
-    if (game.score() == 15) {
+    if (game.score() == 20) {
+        game.pause()
+        music.startMelody(music.builtInMelody(Melodies.Ringtone), MelodyOptions.Once)
+        game.startCountdown(32000)
+        time = 30
+        basic.showString("" + (game.score()))
+        game.resume()
+    }
+    if (game.score() == 30) {
         game.pause()
         music.startMelody(music.builtInMelody(Melodies.Ringtone), MelodyOptions.Once)
         basic.showString("" + (game.score()))
+        basic.showString("+1")
+        game.startCountdown(32000)
+        time = 30
         game.resume()
+    }
+    if (game.score() == 40) {
+        game.pause()
+        music.startMelody(music.builtInMelody(Melodies.Ringtone), MelodyOptions.Once)
+        basic.showString("" + (game.score()))
+        basic.showString("+2")
+        game.startCountdown(32000)
+        time = 30
+        game.resume()
+    }
+    if (game.score() == 50) {
+        game.pause()
+        music.startMelody(music.builtInMelody(Melodies.Ringtone), MelodyOptions.Once)
+        basic.showString("" + (game.score()))
+        basic.showString("YOU WIN!")
+        basic.showIcon(IconNames.Heart)
+        basic.showString("THIS HEART IS FOR YOU")
+        basic.showString("AGAIN?")
+    }
+})
+basic.forever(function () {
+    // 倒數
+    time += -1
+    basic.pause(1000)
+    // 如果時間剩20秒
+    // →顯示20
+    // 如果時間剩10秒
+    // →顯示10
+    if (time == 15) {
+        basic.showString("" + (time))
+    } else if (time == 5) {
+        basic.showString("" + (time))
     }
 })
 // 背景音
 control.inBackground(function () {
-    music.startMelody(music.builtInMelody(Melodies.Funk), MelodyOptions.ForeverInBackground)
+    music.startMelody(music.builtInMelody(Melodies.Funk), MelodyOptions.Forever)
 })
