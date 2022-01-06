@@ -1,3 +1,6 @@
+input.onPinPressed(TouchPin.P0, function () {
+	
+})
 // 按A鍵 向左一格
 input.onButtonPressed(Button.A, function () {
     主角.change(LedSpriteProperty.X, -1)
@@ -13,6 +16,8 @@ input.onButtonPressed(Button.AB, function () {
     }
     // 跑到最上面後消失
     子彈.delete()
+    // 子彈飛出去發出來的聲音
+    soundExpression.giggle.play()
 })
 // 按B鍵 向右一格
 input.onButtonPressed(Button.B, function () {
